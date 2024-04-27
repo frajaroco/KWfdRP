@@ -1,10 +1,11 @@
+
 #--------------------------------------------------------------------
 # Kruskal-Wallis test for functional data based on random projections
 # Application to Canadian Weather Dataset
 #--------------------------------------------------------------------
 
 
-
+rm(list=ls())
 library(fda.usc)
 library(fda)
 library(BSDA)
@@ -16,6 +17,7 @@ library(ggpubr)
 # library(normtest) 
 library(nortest) 
 library(moments) 
+
 
 #------------------------
 # Canadian Weather Data
@@ -83,6 +85,7 @@ res
 # Curves for each region
 #--------------------------------
 
+nt=365   
 par(mfrow=c(2,2))
 temp.fdata1 <- fdata(temp.fdATL, argvals = seq(1,365,length=nt))
 temp.fdata2 <- fdata(temp.fdCON ,argvals = seq(1,365,length=nt))
@@ -99,7 +102,7 @@ plot(temp.fdata4, col="blue", main="Arctic",ylim= c(-35,22), ylab="Temperature C
 # Generating a Brownian Motion and Random Projections
 #-----------------------------------------------------
 
-nt=365                         
+                      
 t=seq(0,365, length= nt)        
 v=rep (0, nt)
 for (i in 2:nt+1)
@@ -184,7 +187,7 @@ for (j in 1:rep)
                  v[i]=v[i-1]+rnorm(1,0,0.1)
                 }
      v=v[-1]
-     random_projections <- int.simpson(temp.fdata*v,  method = NULL)
+# random_projections <- int.simpson(temp.fdata*v,  method = NULL)
 
 
 #-------------------------------------------------
@@ -203,6 +206,8 @@ for (j in 1:rep)
 
     pvalue[j]=kruskal.test(list(x1,x2,x3,x4))[[3]]
      }
+
+boxplot(pvalue, pch=16, col=4)
 alpha=0.05
 p_value=sum(ifelse(pvalue<alpha,0,1))/rep
-p_value   
+p_value 
